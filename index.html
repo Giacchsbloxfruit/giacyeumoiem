@@ -19,6 +19,8 @@ body {
 /* 🌊 Sóng neon */
 .wave {
     position: absolute;
+    top: -50%; /* Đã thêm để fix góc đen */
+    left: -50%; /* Đã thêm để fix góc đen */
     width: 200%;
     height: 200%;
     background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.2), transparent 70%),
@@ -164,12 +166,10 @@ button:hover {
 <div class="wave"></div>
 <div class="wave"></div>
 
-<!-- 🎵 nhạc -->
 <audio id="bgm" loop>
 <source src="https://raw.githubusercontent.com/Giacchsbloxfruit/giacyeumoiem/main/Nhac.mp3">
 </audio>
 
-<!-- 🎮 BOX -->
 <div class="box">
     <h1>🎮 NHẬP GIFT CODE</h1>
     <input id="codeInput" placeholder="Nhập code...">
@@ -178,7 +178,6 @@ button:hover {
     <div id="message"></div>
 </div>
 
-<!-- 🎉 POPUP -->
 <div class="popup" id="popup">
     <div class="popup-content">
         <h2>🎉 Chúc mừng!</h2>
