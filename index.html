@@ -16,7 +16,7 @@ body {
     align-items: center;
 }
 
-/* 🌊 Sóng neon */
+/* 🌊 nền sóng */
 .wave {
     position: absolute;
     width: 200%;
@@ -24,110 +24,150 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.2), transparent 70%),
                 radial-gradient(circle at 30% 30%, rgba(255,0,255,0.2), transparent 70%),
                 radial-gradient(circle at 70% 70%, rgba(0,255,100,0.2), transparent 70%);
-    animation: move 12s linear infinite;
-    filter: blur(60px);
-}
-
-.wave:nth-child(2) {
-    animation-duration: 18s;
-    transform: rotate(180deg);
-}
-
-.wave:nth-child(3) {
-    animation-duration: 25s;
-    transform: rotate(90deg);
+    animation: move 15s linear infinite;
+    filter: blur(70px);
 }
 
 @keyframes move {
     0% { transform: translate(-20%, -20%) rotate(0deg); }
-    50% { transform: translate(20%, 20%) rotate(180deg); }
-    100% { transform: translate(-20%, -20%) rotate(360deg); }
+    100% { transform: translate(20%, 20%) rotate(360deg); }
 }
 
-/* Box */
+/* 🎮 BOX TO ĐẸP */
 .box {
     position: relative;
     z-index: 10;
-    background: rgba(0,0,0,0.7);
-    padding: 30px;
-    border-radius: 15px;
+    background: rgba(0,0,0,0.8);
+    padding: 40px;
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 0 25px cyan;
-    width: 320px;
-    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px cyan, 0 0 80px green;
+    width: 400px;
+    backdrop-filter: blur(15px);
 }
 
 h1 {
     color: cyan;
-    text-shadow: 0 0 15px cyan;
+    text-shadow: 0 0 20px cyan;
 }
 
+/* 🌈 input neon */
 input {
-    width: 80%;
-    padding: 10px;
-    margin: 15px 0;
-    border: none;
-    border-radius: 5px;
+    width: 90%;
+    padding: 14px;
+    margin: 20px 0;
+    border-radius: 10px;
     text-align: center;
+    background: black;
+    color: white;
+    border: 2px solid transparent;
+
+    background-image: linear-gradient(black, black),
+    linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+    background-clip: padding-box, border-box;
+
+    animation: hue 3s linear infinite;
+    box-shadow: 0 0 15px cyan;
+}
+
+@keyframes hue {
+    100% { filter: hue-rotate(360deg); }
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     background: cyan;
+    font-weight: bold;
     cursor: pointer;
 }
 
-#message {
-    margin-top: 10px;
-    font-weight: bold;
+button:hover {
+    box-shadow: 0 0 15px cyan;
 }
 
-/* Popup */
+/* 💥 POPUP */
 .popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
+
+    display: flex;
     justify-content: center;
     align-items: center;
+
+    background: rgba(0,0,0,0.7);
+
+    visibility: hidden;
+    z-index: 9999;
+}
+
+.popup.show {
+    visibility: visible;
 }
 
 .popup-content {
     background: black;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    border-radius: 15px;
     text-align: center;
-    box-shadow: 0 0 20px lime;
+    color: white;
+    box-shadow: 0 0 40px lime, 0 0 80px cyan;
+    transform: scale(0);
+}
+
+/* bật ra */
+.popup.show .popup-content {
+    animation: pop 0.4s ease forwards;
+}
+
+@keyframes pop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* ❤️🍬 rơi */
+.fall {
+    position: fixed;
+    top: -50px;
+    font-size: 20px;
+    animation: fall linear infinite;
+    opacity: 0.8;
+    z-index: 5;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+    }
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- 🌊 nền sóng -->
-<div class="wave"></div>
 <div class="wave"></div>
 <div class="wave"></div>
 
-<!-- 🎵 NHẠC -->
+<!-- 🎵 nhạc -->
 <audio id="bgm" loop>
-    <source src="https://raw.githubusercontent.com/Giacchsbloxfruit/giacyeumoiem/main/Nhac.mp3" type="audio/mpeg">
+<source src="https://raw.githubusercontent.com/Giacchsbloxfruit/giacyeumoiem/main/Nhac.mp3">
 </audio>
 
+<!-- 🎮 BOX -->
 <div class="box">
     <h1>🎮 NHẬP GIFT CODE</h1>
-    <input type="text" id="codeInput" placeholder="Nhập code...">
+    <input id="codeInput" placeholder="Nhập code...">
     <br>
     <button onclick="checkCode()">Xác nhận</button>
     <div id="message"></div>
 </div>
 
-<!-- Popup -->
+<!-- 🎉 POPUP -->
 <div class="popup" id="popup">
     <div class="popup-content">
         <h2>🎉 Chúc mừng!</h2>
@@ -137,33 +177,50 @@ button {
 </div>
 
 <script>
-// 🎵 Auto play
-window.onload = function() {
-    let audio = document.getElementById("bgm");
-    audio.play().catch(() => {
-        document.body.addEventListener("click", () => {
-            audio.play();
-        }, { once: true });
+// 🎵 nhạc
+window.onload = () => {
+    let a = document.getElementById("bgm");
+    a.play().catch(()=>{
+        document.body.onclick=()=>a.play();
     });
+
+    createFall();
 };
 
 // check code
-function checkCode() {
+function checkCode(){
     let code = document.getElementById("codeInput").value;
-    let message = document.getElementById("message");
 
-    if (code === "Giacdz") {
-        message.innerHTML = "";
-        document.getElementById("popup").style.display = "flex";
+    if(code==="Giacdz"){
+        document.getElementById("popup").classList.add("show");
     } else {
-        message.style.color = "red";
-        message.innerHTML = "❌ Code không hợp lệ!";
+        let msg = document.getElementById("message");
+        msg.innerHTML="❌ Code không hợp lệ!";
+        msg.style.color="red";
     }
 }
 
 // đóng popup
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
+function closePopup(){
+    document.getElementById("popup").classList.remove("show");
+}
+
+// ❤️🍬 hiệu ứng rơi chill
+function createFall(){
+    let items = ["❤️","💖","🍬","🍩"];
+
+    setInterval(()=>{
+        let el = document.createElement("div");
+        el.className="fall";
+        el.innerHTML = items[Math.floor(Math.random()*items.length)];
+
+        el.style.left = Math.random()*100+"vw";
+        el.style.animationDuration = (6 + Math.random()*6)+"s";
+
+        document.body.appendChild(el);
+
+        setTimeout(()=>el.remove(),12000);
+    },600);
 }
 </script>
 
