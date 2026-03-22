@@ -1,100 +1,171 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Gift Code Gaming</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<title>Gift Code Gaming</title>
 
-        .box {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 0 20px cyan;
-            width: 300px;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    height: 100vh;
+    overflow: hidden;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        h1 {
-            color: cyan;
-            text-shadow: 0 0 10px cyan;
-        }
+/* 🌊 Sóng neon */
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.2), transparent 70%),
+                radial-gradient(circle at 30% 30%, rgba(255,0,255,0.2), transparent 70%),
+                radial-gradient(circle at 70% 70%, rgba(0,255,100,0.2), transparent 70%);
+    animation: move 12s linear infinite;
+    filter: blur(60px);
+}
 
-        input {
-            width: 80%;
-            padding: 10px;
-            margin: 15px 0;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            font-size: 16px;
-            text-align: center;
-        }
+.wave:nth-child(2) {
+    animation-duration: 18s;
+    transform: rotate(180deg);
+}
 
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background: cyan;
-            color: black;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.wave:nth-child(3) {
+    animation-duration: 25s;
+    transform: rotate(90deg);
+}
 
-        #message {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+@keyframes move {
+    0% { transform: translate(-20%, -20%) rotate(0deg); }
+    50% { transform: translate(20%, 20%) rotate(180deg); }
+    100% { transform: translate(-20%, -20%) rotate(360deg); }
+}
+
+/* Box */
+.box {
+    position: relative;
+    z-index: 10;
+    background: rgba(0,0,0,0.7);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 25px cyan;
+    width: 320px;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    color: cyan;
+    text-shadow: 0 0 15px cyan;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: cyan;
+    cursor: pointer;
+}
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: black;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px lime;
+}
+</style>
+
 </head>
 <body>
 
-    <!-- 🎵 Nhạc nền (file của bạn) -->
-    <audio id="bgm" loop>
-        <source src="file.mp3" type="audio/mpeg">
-    </audio>
+<!-- 🌊 nền sóng -->
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
 
-    <div class="box">
-        <h1>🎮 NHẬP GIFT CODE</h1>
-        <input type="text" id="codeInput" placeholder="Nhập code...">
-        <br>
-        <button onclick="checkCode()">Xác nhận</button>
-        <div id="message"></div>
+<!-- 🎵 NHẠC -->
+<audio id="bgm" loop>
+    <source src="https://raw.githubusercontent.com/Giacchsbloxfruit/giacyeumoiem/main/Nhac.mp3" type="audio/mpeg">
+</audio>
+
+<div class="box">
+    <h1>🎮 NHẬP GIFT CODE</h1>
+    <input type="text" id="codeInput" placeholder="Nhập code...">
+    <br>
+    <button onclick="checkCode()">Xác nhận</button>
+    <div id="message"></div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h2>🎉 Chúc mừng!</h2>
+        <p>Bạn nhận được 1 phiếu ăn sinh nhật của Minh Giác!</p>
+        <button onclick="closePopup()">OK</button>
     </div>
+</div>
 
-    <script>
-        // Tự phát nhạc khi vào web (có thể cần click 1 lần)
-        window.onload = function() {
-            var audio = document.getElementById("bgm");
-            audio.play().catch(() => {
-                document.body.addEventListener("click", () => {
-                    audio.play();
-                }, { once: true });
-            });
-        }
+<script>
+// 🎵 Auto play
+window.onload = function() {
+    let audio = document.getElementById("bgm");
+    audio.play().catch(() => {
+        document.body.addEventListener("click", () => {
+            audio.play();
+        }, { once: true });
+    });
+};
 
-        function checkCode() {
-            var code = document.getElementById("codeInput").value;
-            var message = document.getElementById("message");
+// check code
+function checkCode() {
+    let code = document.getElementById("codeInput").value;
+    let message = document.getElementById("message");
 
-            if (code === "Giacdz") {
-                message.style.color = "lime";
-                message.innerHTML = "🎉 Chúc mừng bạn nhận được 1 phiếu ăn sinh nhật của Minh Giác!";
-            } else {
-                message.style.color = "red";
-                message.innerHTML = "❌ Code không hợp lệ!";
-            }
-        }
-    </script>
+    if (code === "Giacdz") {
+        message.innerHTML = "";
+        document.getElementById("popup").style.display = "flex";
+    } else {
+        message.style.color = "red";
+        message.innerHTML = "❌ Code không hợp lệ!";
+    }
+}
+
+// đóng popup
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+</script>
 
 </body>
 </html>
