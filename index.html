@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gift Code Gaming</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px cyan;
+            width: 300px;
+        }
+
+        h1 {
+            color: cyan;
+            text-shadow: 0 0 10px cyan;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: cyan;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🎵 Nhạc nền (file của bạn) -->
+    <audio id="bgm" loop>
+        <source src="YTDown.com_YouTube_Hngle-KHONG-BUONG-ft-Ari-Official-Music-_Media_9UcQ7ddVjoc_009_128k.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="box">
+        <h1>🎮 NHẬP GIFT CODE</h1>
+        <input type="text" id="codeInput" placeholder="Nhập code...">
+        <br>
+        <button onclick="checkCode()">Xác nhận</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Tự phát nhạc khi vào web (có thể cần click 1 lần)
+        window.onload = function() {
+            var audio = document.getElementById("bgm");
+            audio.play().catch(() => {
+                document.body.addEventListener("click", () => {
+                    audio.play();
+                }, { once: true });
+            });
+        }
+
+        function checkCode() {
+            var code = document.getElementById("codeInput").value;
+            var message = document.getElementById("message");
+
+            if (code === "Giacdz") {
+                message.style.color = "lime";
+                message.innerHTML = "🎉 Chúc mừng bạn nhận được 1 phiếu ăn sinh nhật của Minh Giác!";
+            } else {
+                message.style.color = "red";
+                message.innerHTML = "❌ Code không hợp lệ!";
+            }
+        }
+    </script>
+
+</body>
+</html>
