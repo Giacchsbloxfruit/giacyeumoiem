@@ -6,121 +6,197 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    height:100vh;
     overflow:hidden;
-    font-family: sans-serif;
+    background:#111;
 }
 
 /* video nền */
-video {
+video{
     position:fixed;
     width:100%;
     height:100%;
     object-fit:cover;
-    filter: blur(10px) brightness(0.6);
+    filter: blur(12px) brightness(0.4) grayscale(100%);
+    z-index:-2;
+}
+
+/* lớp phủ */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
     z-index:-1;
 }
 
 /* card */
-.card {
+.card{
     position:absolute;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    width:320px;
-    padding:25px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.1);
-    backdrop-filter:blur(20px);
-    border:3px solid white;
-    box-shadow:0 0 40px white;
+    width:340px;
+    padding:30px;
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px);
+
+    border:2px solid rgba(255,255,255,0.7);
+    box-shadow:
+        0 0 25px rgba(255,255,255,0.3),
+        inset 0 0 10px rgba(255,255,255,0.1);
+
     text-align:center;
+    transition: transform 0.1s;
 }
 
-.avatar {
-    width:100px;
+/* avatar */
+.avatar{
+    width:110px;
     border-radius:50%;
+    border:2px solid white;
+    margin-bottom:15px;
 }
 
-h1,p {
+/* chữ */
+h1{
     color:white;
+    margin-bottom:10px;
     text-shadow:0 0 10px white;
 }
 
-a {
-    color:white;
+p{
+    color:#ccc;
+    margin-bottom:10px;
+}
+
+/* box info */
+.info{
+    background:rgba(255,255,255,0.05);
+    padding:12px;
+    border-radius:12px;
+    margin:10px 0;
+}
+
+/* social */
+.social a{
     margin:10px;
+    font-size:22px;
+    color:white;
     text-decoration:none;
+    transition:0.2s;
+}
+
+.social a:hover{
+    text-shadow:0 0 10px white;
+}
+
+/* nút */
+.btn{
+    margin-top:10px;
+    padding:8px 15px;
+    border-radius:10px;
+    border:none;
+    background:white;
+    color:black;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#ddd;
+}
+
+/* nhạc */
+.music{
+    margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- VIDEO NỀN -->
 <video autoplay muted loop id="bgVideo">
-    <source src="https://files.catbox.moe/o1x0y6.mp4">
+    <source src="https://files.catbox.moe/tj9qgh.mp4" type="video/mp4">
 </video>
 
-<div class="card" id="card">
-    <img src="https://i.imgur.com/4M34hi2.png" class="avatar" id="avatar">
-    <h1 id="name">Minh Giác</h1>
-    <p id="bio">Dev | Student</p>
+<div class="overlay"></div>
 
-    <div>
-        <a id="fb" href="#">Facebook</a>
-        <a id="tt" href="#">TikTok</a>
-        <a id="dc" href="#">Discord</a>
+<!-- CARD -->
+<div class="card" id="card">
+
+    <img src="https://i.imgur.com/4M34hi2.png" class="avatar" id="avatar">
+
+    <h1 id="name">Minh Giác</h1>
+
+    <div class="info">
+        <p id="bio">Dev | Student | Chill</p>
     </div>
 
-    <button onclick="edit()">Chỉnh sửa</button>
+    <div class="social">
+        <a id="fb" href="#">ⓕ</a>
+        <a id="tt" href="#">♪</a>
+        <a id="dc" href="#">💬</a>
+    </div>
+
+    <div class="music">
+        <button class="btn" onclick="prev()">⏮</button>
+        <button class="btn" onclick="play()">▶</button>
+        <button class="btn" onclick="next()">⏭</button>
+    </div>
+
 </div>
 
-<audio id="music"></audio>
+<audio id="audio"></audio>
 
 <script>
-// xoay card
+// xoay theo chuột
 const card = document.getElementById("card");
-document.addEventListener("mousemove", e => {
+
+document.addEventListener("mousemove", e=>{
     let x = (window.innerWidth/2 - e.pageX)/20;
     let y = (window.innerHeight/2 - e.pageY)/20;
+
     card.style.transform =
     `translate(-50%,-50%) rotateY(${x}deg) rotateX(${y}deg)`;
 });
 
-// nhạc
+// playlist nhạc
 let songs = [
- "https://files.catbox.moe/3i2q0p.mp3"
+ "https://files.catbox.moe/3i2q0p.mp3",
+ "https://files.catbox.moe/6w0x8n.mp3"
 ];
 
-let i=0;
-let audio=document.getElementById("music");
+let index = 0;
+let audio = document.getElementById("audio");
 
 function play(){
-    audio.src=songs[i];
+    audio.src = songs[index];
     audio.play();
 }
 
-document.body.addEventListener("click",play,{once:true});
-
-// chỉnh sửa
-function edit(){
-    let name=prompt("Tên:");
-    let bio=prompt("Bio:");
-    let fb=prompt("Link FB:");
-    let tt=prompt("Link TikTok:");
-    let dc=prompt("Link Discord:");
-    let ava=prompt("Link ảnh:");
-    let vid=prompt("Link video:");
-
-    if(name) document.getElementById("name").innerText=name;
-    if(bio) document.getElementById("bio").innerText=bio;
-    if(fb) document.getElementById("fb").href=fb;
-    if(tt) document.getElementById("tt").href=tt;
-    if(dc) document.getElementById("dc").href=dc;
-    if(ava) document.getElementById("avatar").src=ava;
-    if(vid) document.getElementById("bgVideo").src=vid;
+function next(){
+    index = (index + 1) % songs.length;
+    play();
 }
+
+function prev(){
+    index = (index - 1 + songs.length) % songs.length;
+    play();
+}
+
+// autoplay fix
+document.body.addEventListener("click", play, {once:true});
 </script>
 
 </body>
