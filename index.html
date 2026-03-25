@@ -28,7 +28,7 @@ video{
     width:100%;
     height:100%;
     object-fit:cover;
-    filter: blur(12px) brightness(0.4) grayscale(100%);
+    filter: blur(4px) brightness(0.6) grayscale(40%);
     z-index:-2;
 }
 
@@ -184,11 +184,11 @@ audio{
 const card = document.getElementById("card");
 
 document.addEventListener("mousemove", e=>{
-    let x = (window.innerWidth/2 - e.pageX)/20;
-    let y = (window.innerHeight/2 - e.pageY)/20;
+    let x = (e.pageX - window.innerWidth/2)/20;
+    let y = (e.pageY - window.innerHeight/2)/20;
 
-    card.style.transform =
-    `translate(-50%,-50%) rotateY(${x}deg) rotateX(${y}deg)`;
+card.style.transform =
+`translate(-50%,-50%) rotateY(${x}deg) rotateX(${-y}deg)`;
 });
 </script>
 
