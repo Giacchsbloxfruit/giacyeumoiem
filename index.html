@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -16,6 +17,12 @@
     font-family:Segoe UI, sans-serif;
 }
 
+html,
+body{
+    width:100%;
+    height:100%;
+}
+
 body{
     height:100vh;
     overflow:hidden;
@@ -26,23 +33,33 @@ body{
    LIVE WALLPAPER
 ========================= */
 
-video{
+#bgVideo{
     position:fixed;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
-    filter:blur(4px) brightness(0.6) grayscale(40%);
+
+    filter:
+        blur(4px)
+        brightness(0.6)
+        grayscale(40%);
+
     z-index:-2;
 }
 
 /* overlay */
 .overlay{
     position:fixed;
+    inset:0;
     width:100%;
     height:100%;
+
     background:rgba(0,0,0,0.6);
+
     z-index:-1;
 }
+
 
 /* =========================
    CARD
@@ -50,82 +67,138 @@ video{
 
 .card{
     position:absolute;
+
     top:50%;
     left:50%;
+
     transform:translate(-50%,-50%);
+
     width:400px;
     padding:35px;
+
     border-radius:25px;
 
     background:rgba(255,255,255,0.05);
+
     backdrop-filter:blur(25px);
     -webkit-backdrop-filter:blur(25px);
 
     border:2px solid rgba(255,255,255,0.8);
-    box-shadow:0 0 30px rgba(255,255,255,0.4);
+
+    box-shadow:
+        0 0 30px rgba(255,255,255,0.4);
 
     text-align:center;
-    transition:transform 0.1s;
+
+    transition:transform 0.1s ease;
 }
 
-/* avatar */
+
+/* =========================
+   AVATAR
+========================= */
+
 .avatar{
     width:120px;
     height:120px;
+
     border-radius:50%;
+
     border:2px solid white;
+
     margin-bottom:15px;
+
     object-fit:cover;
+
+    box-shadow:
+        0 0 15px rgba(255,255,255,0.25);
 }
 
-/* text */
+
+/* =========================
+   TEXT
+========================= */
+
 h1{
     color:white;
-    text-shadow:0 0 10px white;
+
+    text-shadow:
+        0 0 10px white;
 }
 
 p{
     color:#ccc;
 }
 
-/* info box */
+
+/* =========================
+   INFO BOX
+========================= */
+
 .box{
     background:rgba(255,255,255,0.05);
+
     padding:12px;
+
     border-radius:12px;
+
     margin:10px 0;
 }
 
-/* social */
+
+/* =========================
+   SOCIAL
+========================= */
+
 .social a{
     margin:12px;
+
     font-size:24px;
+
     color:white;
+
     transition:0.2s;
+
     display:inline-block;
 }
 
 .social a:hover{
-    text-shadow:0 0 10px white;
+    text-shadow:
+        0 0 10px white;
+
     transform:scale(1.1);
 }
 
-/* skill */
+
+/* =========================
+   SKILLS
+========================= */
+
 .skills{
     margin-top:10px;
 }
 
 .skills span{
     display:inline-block;
+
     margin:5px;
+
     padding:5px 10px;
+
     border:1px solid white;
+
     border-radius:8px;
+
     font-size:12px;
+
     color:white;
 }
 
-/* nhạc */
+
+/* =========================
+   AUDIO
+========================= */
+
 audio{
     display:none;
 }
@@ -136,6 +209,7 @@ audio{
 ========================= */
 
 @media(max-width:500px){
+
     .card{
         width:90%;
         padding:25px;
@@ -159,9 +233,14 @@ audio{
      LIVE WALLPAPER
 ========================= -->
 
-<video autoplay muted loop playsinline id="bgVideo">
-    <source src="" type="video/mp4">
-</video>
+<video
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    id="bgVideo"
+></video>
 
 <div class="overlay"></div>
 
@@ -201,14 +280,17 @@ audio{
         <span>JavaScript</span>
     </div>
 
-    <!-- SOCIAL -->
+
+    <!-- =========================
+         SOCIAL
+    ========================= -->
 
     <div class="social">
 
         <a
             href="https://www.facebook.com/share/1DhLrxUrNT/"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
         >
             <i class="fab fa-facebook"></i>
         </a>
@@ -216,7 +298,7 @@ audio{
         <a
             href="https://www.tiktok.com/"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
         >
             <i class="fab fa-tiktok"></i>
         </a>
@@ -224,7 +306,7 @@ audio{
         <a
             href="https://discord.gg/dRVBQVkN"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
         >
             <i class="fab fa-discord"></i>
         </a>
@@ -238,16 +320,18 @@ audio{
      NHẠC NỀN
 ========================= -->
 
-<audio id="bgMusic" autoplay loop>
-    <source src="" type="audio/mpeg">
-</audio>
+<audio
+    id="bgMusic"
+    autoplay
+    loop
+    preload="auto"
+></audio>
 
 
 <script>
 
 /* =========================================================
    DANH SÁCH LIVE WALLPAPER
-   Mỗi lần F5 / truy cập lại web sẽ random 1 video
 ========================================================= */
 
 const backgrounds = [
@@ -255,42 +339,82 @@ const backgrounds = [
     "https://files.catbox.moe/tj9qgh.mp4",
     "https://files.catbox.moe/zz9c19.mp4",
     "https://files.catbox.moe/14xrt8.mp4",
-    "https://files.catbox.moe/8irzr4.mp4",
-
-    // Thêm video của boss man ở đây:
-    // "https://files.catbox.moe/VIDEO2.mp4",
-    // "https://files.catbox.moe/VIDEO3.mp4",
-    // "https://files.catbox.moe/VIDEO4.mp4",
-    // "https://files.catbox.moe/VIDEO5.mp4",
+    "https://files.catbox.moe/8irzr4.mp4"
 
 ];
 
 
 /* =========================================================
    DANH SÁCH NHẠC
-   Mỗi lần F5 / truy cập lại web sẽ random 1 bài
 ========================================================= */
 
 const musics = [
 
     "https://files.catbox.moe/9gu9lj.mp3",
-    "https://files.catbox.moe/22dybh.mp3",
-    
-    // Thêm nhạc của boss man ở đây:
-    // "https://files.catbox.moe/MUSIC2.mp3",
-    // "https://files.catbox.moe/MUSIC3.mp3",
-    // "https://files.catbox.moe/MUSIC4.mp3",
-    // "https://files.catbox.moe/MUSIC5.mp3",
+    "https://files.catbox.moe/22dybh.mp3"
 
 ];
 
 
 /* =========================================================
-   HÀM RANDOM
+   STORAGE AN TOÀN
+   Lưu bài/video vừa phát để lần sau không trùng
 ========================================================= */
 
-function randomItem(array){
-    return array[Math.floor(Math.random() * array.length)];
+function getStorage(key){
+
+    try{
+        return localStorage.getItem(key);
+    }catch(error){
+        return null;
+    }
+
+}
+
+function setStorage(key,value){
+
+    try{
+        localStorage.setItem(key,value);
+    }catch(error){
+        // Không làm gì nếu trình duyệt chặn storage
+    }
+
+}
+
+
+/* =========================================================
+   RANDOM KHÔNG TRÙNG LẦN TRƯỚC
+========================================================= */
+
+function randomDifferent(array,storageKey){
+
+    if(!Array.isArray(array) || array.length === 0){
+        return null;
+    }
+
+    if(array.length === 1){
+        return array[0];
+    }
+
+    const last =
+        getStorage(storageKey);
+
+    let selected;
+
+    do{
+
+        selected =
+            array[
+                Math.floor(
+                    Math.random() * array.length
+                )
+            ];
+
+    }while(selected === last);
+
+    setStorage(storageKey,selected);
+
+    return selected;
 }
 
 
@@ -298,79 +422,315 @@ function randomItem(array){
    RANDOM LIVE WALLPAPER
 ========================================================= */
 
-const bgVideo = document.getElementById("bgVideo");
+const bgVideo =
+    document.getElementById("bgVideo");
 
-const randomBackground = randomItem(backgrounds);
+let selectedBackground =
+    randomDifferent(
+        backgrounds,
+        "giac_last_background"
+    );
 
-bgVideo.src = randomBackground;
-bgVideo.load();
 
-bgVideo.play().catch(() => {
-    // Giữ nguyên autoplay video muted
-});
+/*
+    Gán trực tiếp src cho video.
+    Không dùng <source src=""> nữa.
+*/
+
+if(selectedBackground){
+
+    bgVideo.src =
+        selectedBackground;
+
+    bgVideo.load();
+
+    const playVideo = () => {
+
+        bgVideo.play().catch(() => {});
+
+    };
+
+    playVideo();
+
+    /*
+        Nếu trình duyệt chưa bắt video,
+        thử lại sau khi trang load.
+    */
+
+    window.addEventListener(
+        "load",
+        playVideo,
+        {once:true}
+    );
+
+}
 
 
 /* =========================================================
-   RANDOM NHẠC
+   RANDOM MUSIC
 ========================================================= */
 
-const bgMusic = document.getElementById("bgMusic");
+const bgMusic =
+    document.getElementById("bgMusic");
 
-const randomMusic = randomItem(musics);
+let selectedMusic =
+    randomDifferent(
+        musics,
+        "giac_last_music"
+    );
 
-bgMusic.src = randomMusic;
-bgMusic.load();
 
-/*
-   Giữ autoplay như web cũ.
-   Không thêm nút nhạc hay thay đổi giao diện.
-*/
+if(selectedMusic){
 
-bgMusic.play().catch(() => {});
+    /*
+        Quan trọng:
+        Gán src trực tiếp + autoplay
+        rồi mới load.
+    */
+
+    bgMusic.autoplay = true;
+    bgMusic.loop = true;
+    bgMusic.muted = false;
+    bgMusic.volume = 1;
+
+    bgMusic.src =
+        selectedMusic;
+
+    bgMusic.load();
+
+
+    /*
+        Thử phát ngay.
+    */
+
+    const playMusic = () => {
+
+        bgMusic.muted = false;
+
+        const promise =
+            bgMusic.play();
+
+        if(promise !== undefined){
+
+            promise.catch(() => {
+
+                /*
+                    Chrome có thể trì hoãn autoplay.
+                    Phần bên dưới sẽ tự thử lại
+                    khi người dùng tương tác.
+                */
+
+            });
+
+        }
+
+    };
+
+
+    playMusic();
+
+
+    /*
+        Thử lại sau khi trang tải xong.
+    */
+
+    window.addEventListener(
+        "load",
+        playMusic,
+        {once:true}
+    );
+
+
+    /*
+        Nếu Chrome chưa cho autoplay,
+        click/chạm bất kỳ chỗ nào cũng
+        sẽ bật nhạc ngay.
+    */
+
+    const unlockMusic = () => {
+
+        bgMusic.muted = false;
+
+        bgMusic.play().catch(() => {});
+
+        document.removeEventListener(
+            "click",
+            unlockMusic
+        );
+
+        document.removeEventListener(
+            "touchstart",
+            unlockMusic
+        );
+
+        document.removeEventListener(
+            "keydown",
+            unlockMusic
+        );
+
+    };
+
+
+    document.addEventListener(
+        "click",
+        unlockMusic,
+        {passive:true}
+    );
+
+    document.addEventListener(
+        "touchstart",
+        unlockMusic,
+        {passive:true}
+    );
+
+    document.addEventListener(
+        "keydown",
+        unlockMusic,
+        {passive:true}
+    );
+
+}
+
+
+/* =========================================================
+   NẾU VIDEO BỊ LỖI
+   Tự thử video khác
+========================================================= */
+
+bgVideo.addEventListener(
+    "error",
+    () => {
+
+        if(backgrounds.length <= 1){
+            return;
+        }
+
+        let fallbackList =
+            backgrounds.filter(
+                item =>
+                    item !== bgVideo.src
+            );
+
+        let fallback =
+            randomDifferent(
+                fallbackList,
+                "giac_last_background"
+            );
+
+        if(fallback){
+
+            bgVideo.src =
+                fallback;
+
+            bgVideo.load();
+
+            bgVideo.play().catch(() => {});
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   NẾU NHẠC BỊ LỖI
+   Tự thử bài khác
+========================================================= */
+
+bgMusic.addEventListener(
+    "error",
+    () => {
+
+        if(musics.length <= 1){
+            return;
+        }
+
+        let fallbackList =
+            musics.filter(
+                item =>
+                    item !== bgMusic.src
+            );
+
+        let fallback =
+            randomDifferent(
+                fallbackList,
+                "giac_last_music"
+            );
+
+        if(fallback){
+
+            bgMusic.src =
+                fallback;
+
+            bgMusic.load();
+
+            bgMusic.play().catch(() => {});
+
+        }
+
+    }
+);
 
 
 /* =========================================================
    XOAY CARD THEO CHUỘT
 ========================================================= */
 
-const card = document.getElementById("card");
+const card =
+    document.getElementById("card");
 
-document.addEventListener("mousemove", e => {
+document.addEventListener(
+    "mousemove",
+    e => {
 
-    let x =
-        (e.pageX - window.innerWidth / 2) / 20;
+        let x =
+            (e.pageX -
+            window.innerWidth / 2) / 20;
 
-    let y =
-        (e.pageY - window.innerHeight / 2) / 20;
-
-    card.style.transform =
-        `translate(-50%,-50%)
-         rotateY(${x}deg)
-         rotateX(${-y}deg)`;
-
-});
-
-
-/* =========================================================
-   MOBILE
-   Nghiêng điện thoại -> card xoay nhẹ
-========================================================= */
-
-if(window.DeviceOrientationEvent){
-
-    window.addEventListener("deviceorientation", e => {
-
-        if(e.beta === null || e.gamma === null) return;
-
-        let x = e.gamma / 5;
-        let y = e.beta / 10;
+        let y =
+            (e.pageY -
+            window.innerHeight / 2) / 20;
 
         card.style.transform =
             `translate(-50%,-50%)
              rotateY(${x}deg)
              rotateX(${-y}deg)`;
 
-    });
+    }
+);
+
+
+/* =========================================================
+   MOBILE
+   NGHIÊNG ĐIỆN THOẠI
+========================================================= */
+
+if(window.DeviceOrientationEvent){
+
+    window.addEventListener(
+        "deviceorientation",
+        e => {
+
+            if(
+                e.beta === null ||
+                e.gamma === null
+            ){
+                return;
+            }
+
+            let x =
+                e.gamma / 5;
+
+            let y =
+                e.beta / 10;
+
+            card.style.transform =
+                `translate(-50%,-50%)
+                 rotateY(${x}deg)
+                 rotateX(${-y}deg)`;
+
+        }
+    );
 
 }
 
@@ -378,3 +738,8 @@ if(window.DeviceOrientationEvent){
 
 </body>
 </html>
+```
+
+**Điểm khác bản cũ:** video và audio giờ dùng `src` trực tiếp thay vì `<source src="">`, có `preload`, `autoplay`, tự `load()`/`play()`, nhớ lựa chọn lần trước bằng `localStorage`, và có fallback khi một file media lỗi.
+
+Muốn thêm nhạc/video thì chỉ việc thêm URL vào hai mảng ở đầu JavaScript.
