@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Giac's Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- icon đẹp -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:#111;
+}
+
+/* video nền */
+video{
+    position:fixed;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter: blur(3px) brightness(0.8) saturate(1.05);
+    z-index:-2;
+}
+
+/* overlay - nhạt hơn để thấy rõ video phía sau */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.32);
+    z-index:-1;
+}
+
+/* card - nhạt & trong hơn, vẫn giữ độ mờ kính (glass) */
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:400px;
+    padding:35px;
+    border-radius:25px;
+    overflow:hidden;
+
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,0.45);
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
+    text-align:center;
+    will-change:transform;
+    transition:transform .12s ease-out, box-shadow .12s ease-out;
+    transform:translate(-50%,-50%) perspective(900px) rotateX(0deg) rotateY(0deg) scale(1);
+}
+
+/* ánh sáng phản chiếu chạy theo chuột, tạo cảm giác 3D thật hơn */
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.28), transparent 55%);
+    opacity:0;
+    transition:opacity .25s ease;
+    pointer-events:none;
+}
+
+.card:hover::before{
+    opacity:1;
+}
+
+/* avatar */
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:2px solid white;
+    margin-bottom:15px;
+    object-fit:cover;
+}
+
+/* text */
+h1{
+    color:white;
+    text-shadow:0 0 10px rgba(255,255,255,0.8), 0 2px 6px rgba(0,0,0,0.6);
+}
+
+p{
+    color:#eee;
+    text-shadow:0 1px 4px rgba(0,0,0,0.85);
+}
+
+/* info box - vẫn giữ đủ tương phản dù nhạt hơn */
+.box{
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    padding:12px;
+    border-radius:12px;
+    margin:10px 0;
+}
+
+/* social */
+.social a{
+    margin:12px;
+    font-size:24px;
+    color:white;
+    text-shadow:0 1px 4px rgba(0,0,0,0.7);
+    transition:0.2s;
+}
+
+.social a:hover{
+    text-shadow:0 0 10px white;
+}
+
+/* skill */
+.skills{
+    margin-top:10px;
+}
+
+.skills span{
+    display:inline-block;
+    margin:5px;
+    padding:5px 10px;
+    border:1px solid white;
+    border-radius:8px;
+    font-size:12px;
+    color:white;
+    text-shadow:0 1px 3px rgba(0,0,0,0.7);
+}
+
+/* nhạc */
+audio{
+    display:none;
+}
+
+/* nút bật nhạc (chỉ hiện khi trình duyệt chặn autoplay) */
+.sound-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:11;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.6);
+    color:white;
+    padding:10px 16px;
+    border-radius:30px;
+    font-size:13px;
+    cursor:pointer;
+    display:none;
+}
+
+/* canvas tuyết - luôn phủ toàn màn hình, không chặn click */
+#snowCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<!-- video nền (src được gán ngẫu nhiên bằng JS) -->
+<video autoplay muted loop playsinline id="bgVideo"></video>
+
+<div class="overlay"></div>
+
+<!-- canvas hiệu ứng tuyết rơi khi click -->
+<canvas id="snowCanvas"></canvas>
+
+<!-- card -->
+<div class="card" id="card">
+
+    <img src="https://files.catbox.moe/1hcclk.jpg" class="avatar">
+
+    <h1>Minh Giác</h1>
+
+    <div class="box">
+        <p>Dev | Student | Chill</p>
+    </div>
+
+    <div class="box">
+        <p><b>Biệt danh:</b> Ty</p>
+        <p><b>Năm sinh:</b> 2010</p>
+        <p><b>Trường:</b> THPT Nguyễn Huệ</p>
+    </div>
+
+    <div class="box">
+        <p><b>Discord:</b> tyheroday_12345</p>
+        <p>"I MISS YOU"</p>
+    </div>
+
+    <div class="skills">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+    </div>
+
+    <div class="social">
+        <a href="https://facebook.com" target="_blank">
+            <i class="https://www.facebook.com/share/1DhLrxUrNT/"></i>
+        </a>
+
+        <a href="https://tiktok.com" target="_blank">
+            <i class="fab fa-tiktok"></i>
+        </a>
+
+        <a href="https://discord.com" target="_blank">
+            <i class="https://discord.gg/dRVBQVkN"></i>
+        </a>
+    </div>
+
+</div>
+
+<!-- nút bật nhạc, chỉ hiện nếu trình duyệt chặn autoplay có tiếng -->
+<button class="sound-btn" id="soundBtn">🔊 Bật nhạc</button>
+
+<!-- nhạc nền (src được gán ngẫu nhiên bằng JS) -->
+<audio autoplay loop id="bgAudio"></audio>
+
+<script>
+// ====== danh sách video & nhạc nền ======
+const videoList = [
+    "https://files.catbox.moe/tj9qgh.mp4",
+    "https://files.catbox.moe/zz9c19.mp4",
+    "https://files.catbox.moe/14xrt8.mp4",
+    "https://files.catbox.moe/8irzr4.mp4"
+];
+
+const musicList = [
+    "https://files.catbox.moe/9gu9lj.mp3",
+    "https://files.catbox.moe/22dybh.mp3"
+];
+
+const bgVideo = document.getElementById("bgVideo");
+const bgAudio = document.getElementById("bgAudio");
+const soundBtn = document.getElementById("soundBtn");
+
+// chọn ngẫu nhiên 1 video + 1 bài nhạc mỗi lần vào trang / F5
+const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
+const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
+
+bgVideo.src = randomVideo;
+bgAudio.src = randomMusic;
+
+bgVideo.play().catch(()=>{}); // video có muted nên hầu như luôn autoplay được
+
+// nhiều trình duyệt chặn audio có tiếng tự phát -> thử play, nếu lỗi thì hiện nút bấm
+bgAudio.play().catch(()=>{
+    soundBtn.style.display = "block";
+});
+
+soundBtn.addEventListener("click", ()=>{
+    bgAudio.play();
+    soundBtn.style.display = "none";
+});
+
+// ====== nghiêng card theo chuột - tính theo chính vị trí của card, mượt & tự nhiên hơn ======
+const card = document.getElementById("card");
+
+card.addEventListener("mousemove", (e)=>{
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;   // 0 -> 1 trong lòng card
+    const py = (e.clientY - rect.top) / rect.height;   // 0 -> 1 trong lòng card
+
+    const rotateY = (px - 0.5) * 16;   // nghiêng trái/phải, tối đa 8 độ mỗi bên
+    const rotateX = (0.5 - py) * 16;   // nghiêng trên/dưới
+
+    card.style.transform =
+        `translate(-50%,-50%) perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+
+    card.style.setProperty("--mx", `${px * 100}%`);
+    card.style.setProperty("--my", `${py * 100}%`);
+});
+
+card.addEventListener("mouseleave", ()=>{
+    card.style.transform =
+        "translate(-50%,-50%) perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)";
+});
+
+// ====== hiệu ứng tuyết rơi thật mỗi khi click ======
+const snowCanvas = document.getElementById("snowCanvas");
+const sctx = snowCanvas.getContext("2d");
+
+function resizeCanvas(){
+    snowCanvas.width = window.innerWidth;
+    snowCanvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+let flakes = [];
+
+function spawnSnow(x, y, count = 35){
+    for(let i = 0; i < count; i++){
+        flakes.push({
+            x: x + (Math.random() - 0.5) * 30,
+            y: y + (Math.random() - 0.5) * 30,
+            r: Math.random() * 3 + 1.2,
+            speedY: Math.random() * 1.2 + 0.6,
+            speedX: (Math.random() - 0.5) * 0.5,
+            angle: Math.random() * Math.PI * 2,
+            swaySpeed: Math.random() * 0.03 + 0.015,
+            life: 0,
+            maxLife: Math.random() * 140 + 160,
+            opacity: Math.random() * 0.5 + 0.5
+        });
+    }
+}
+
+function updateSnow(){
+    sctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+
+    flakes = flakes.filter(f => f.life < f.maxLife && f.y < snowCanvas.height + 20);
+
+    flakes.forEach(f=>{
+        f.life++;
+        f.angle += f.swaySpeed;
+        f.y += f.speedY;
+        f.x += f.speedX + Math.sin(f.angle) * 0.4;
+
+        const fade = 1 - (f.life / f.maxLife);
+
+        sctx.beginPath();
+        sctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        sctx.fillStyle = `rgba(255,255,255,${f.opacity * fade})`;
+        sctx.shadowColor = "rgba(255,255,255,0.9)";
+        sctx.shadowBlur = 5;
+        sctx.fill();
+    });
+
+    requestAnimationFrame(updateSnow);
+}
+updateSnow();
+
+window.addEventListener("click", (e)=>{
+    spawnSnow(e.clientX, e.clientY);
+});
+</script>
+
+</body>
+</html>
