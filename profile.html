@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Giac's Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- icon đẹp -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:#111;
+}
+
+/* video nền */
+video{
+    position:fixed;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter: blur(4px) brightness(0.6) grayscale(40%);
+    z-index:-2;
+}
+
+/* overlay */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    z-index:-1;
+}
+
+/* card */
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:400px;
+    padding:35px;
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px);
+
+    border:2px solid rgba(255,255,255,0.8);
+    box-shadow:0 0 30px rgba(255,255,255,0.4);
+
+    text-align:center;
+    transition: transform 0.1s;
+}
+
+/* avatar */
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:2px solid white;
+    margin-bottom:15px;
+    object-fit:cover;
+}
+
+/* text */
+h1{
+    color:white;
+    text-shadow:0 0 10px white;
+}
+
+p{
+    color:#ccc;
+}
+
+/* info box */
+.box{
+    background:rgba(255,255,255,0.05);
+    padding:12px;
+    border-radius:12px;
+    margin:10px 0;
+}
+
+/* social */
+.social a{
+    margin:12px;
+    font-size:24px;
+    color:white;
+    transition:0.2s;
+}
+
+.social a:hover{
+    text-shadow:0 0 10px white;
+}
+
+/* skill */
+.skills{
+    margin-top:10px;
+}
+
+.skills span{
+    display:inline-block;
+    margin:5px;
+    padding:5px 10px;
+    border:1px solid white;
+    border-radius:8px;
+    font-size:12px;
+    color:white;
+}
+
+/* nhạc */
+audio{
+    display:none;
+}
+
+/* nút bật nhạc (chỉ hiện khi trình duyệt chặn autoplay) */
+.sound-btn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:5;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.6);
+    color:white;
+    padding:10px 16px;
+    border-radius:30px;
+    font-size:13px;
+    cursor:pointer;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- video nền (src được gán ngẫu nhiên bằng JS) -->
+<video autoplay muted loop playsinline id="bgVideo"></video>
+
+<div class="overlay"></div>
+
+<!-- card -->
+<div class="card" id="card">
+
+    <img src="https://files.catbox.moe/1hcclk.jpg" class="avatar">
+
+    <h1>Minh Giác</h1>
+
+    <div class="box">
+        <p>Dev | Student | Chill</p>
+    </div>
+
+    <div class="box">
+        <p><b>Biệt danh:</b> Ty</p>
+        <p><b>Năm sinh:</b> 2010</p>
+        <p><b>Trường:</b> THPT Nguyễn Huệ</p>
+    </div>
+
+    <div class="box">
+        <p><b>Discord:</b> tyheroday_12345</p>
+        <p>"I MISS YOU"</p>
+    </div>
+
+    <div class="skills">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+    </div>
+
+    <div class="social">
+        <a href="https://facebook.com" target="_blank">
+            <i class="https://www.facebook.com/share/1DhLrxUrNT/"></i>
+        </a>
+
+        <a href="https://tiktok.com" target="_blank">
+            <i class="fab fa-tiktok"></i>
+        </a>
+
+        <a href="https://discord.com" target="_blank">
+            <i class="https://discord.gg/dRVBQVkN"></i>
+        </a>
+    </div>
+
+</div>
+
+<!-- nút bật nhạc, chỉ hiện nếu trình duyệt chặn autoplay có tiếng -->
+<button class="sound-btn" id="soundBtn">🔊 Bật nhạc</button>
+
+<!-- nhạc nền (src được gán ngẫu nhiên bằng JS) -->
+<audio autoplay loop id="bgAudio"></audio>
+
+<script>
+// ====== danh sách video & nhạc nền ======
+const videoList = [
+    "https://files.catbox.moe/tj9qgh.mp4",
+    "https://files.catbox.moe/zz9c19.mp4",
+    "https://files.catbox.moe/14xrt8.mp4",
+    "https://files.catbox.moe/8irzr4.mp4"
+];
+
+const musicList = [
+    "https://files.catbox.moe/9gu9lj.mp3",
+    "https://files.catbox.moe/22dybh.mp3"
+];
+
+const bgVideo = document.getElementById("bgVideo");
+const bgAudio = document.getElementById("bgAudio");
+const soundBtn = document.getElementById("soundBtn");
+
+// chọn ngẫu nhiên 1 video + 1 bài nhạc mỗi lần vào trang / F5
+const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
+const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
+
+bgVideo.src = randomVideo;
+bgAudio.src = randomMusic;
+
+bgVideo.play().catch(()=>{}); // video có muted nên hầu như luôn autoplay được
+
+// nhiều trình duyệt chặn audio có tiếng tự phát -> thử play, nếu lỗi thì hiện nút bấm
+bgAudio.play().catch(()=>{
+    soundBtn.style.display = "block";
+});
+
+soundBtn.addEventListener("click", ()=>{
+    bgAudio.play();
+    soundBtn.style.display = "none";
+});
+
+// xoay card
+const card = document.getElementById("card");
+
+document.addEventListener("mousemove", e=>{
+    let x = (e.pageX - window.innerWidth/2)/20;
+    let y = (e.pageY - window.innerHeight/2)/20;
+
+card.style.transform =
+`translate(-50%,-50%) rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+</script>
+
+</body>
+</html>
